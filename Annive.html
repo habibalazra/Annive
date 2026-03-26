@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary, Elsa!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff758c;
+            --secondary-color: #ff7eb3;
+            --text-color: #4a4a4a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Navigasi Layar */
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--primary-color);
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Tombol Interaktif */
+        .btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        }
+
+        /* Galeri Polaroid yang bisa di-klik */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 20px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.5s;
+            width: 200px;
+            text-align: center;
+        }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 3px;
+        }
+
+        .caption {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            color: var(--primary-color);
+            display: none; /* Sembunyikan teks sampai diklik */
+        }
+
+        .polaroid.revealed .caption {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Efek Partikel Hati */
+        .heart {
+            position: fixed;
+            top: -10vh;
+            color: var(--primary-color);
+            font-size: 20px;
+            animation: fall linear forwards;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="musik-kenangan-kita.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="screen1" class="screen active">
+        <h1>Halo, Elsa...</h1>
+        <p>Ada sesuatu yang ingin aku tunjukkan untuk merayakan hari spesial kita.</p>
+        <p><i>(Pastikan volume suaramu nyala ya!)</i></p>
+        <button class="btn" onclick="startJourney()">Mulai Perjalanan Kita ❤️</button>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h1>Memori Kita</h1>
+        <p>Klik setiap foto di bawah ini untuk melihat pesan di baliknya.</p>
+        
+        <div class="gallery">
+            <div class="polaroid" onclick="revealCaption(this)">
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500" alt="Foto 1">
+                <div class="caption">Hari pertama kita...</div>
+            </div>
+            
+            <div class="polaroid" onclick="revealCaption(this)">
+                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=500" alt="Foto 2">
+                <div class="caption">Momen paling lucu!</div>
+            </div>
+
+            <div class="polaroid" onclick="revealCaption(this)">
+                <img src="https://images.unsplash.com/photo-1501901609772-df0848060b33?w=500" alt="Foto 3">
+                <div class="caption">Gak akan pernah lupa...</div>
+            </div>
+        </div>
+
+        <button class="btn" style="display:none;" id="btnNext" onclick="showFinalMessage()">Lanjut Baca Pesan 💌</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <h1>Happy Anniversary!</h1>
+        <p>Setiap foto tadi cuma sebagian kecil dari perjalanan seru kita. Terima kasih sudah selalu ada dan membuat hari-hariku jadi jauh lebih berwarna.</p>
+        <p>Semoga kita bisa terus membuat kenangan manis, mewujudkan mimpi-mimpi kita, dan terus berjalan berdampingan.</p>
+        <p>I love you, Elsa!</p>
+        <h2 style="font-family: 'Dancing Script'; color: var(--primary-color);">~ Habib ~</h2>
+    </div>
+
+    <script>
+        let photosRevealed = 0;
+
+        // Fungsi saat tombol pertama diklik
+        function startJourney() {
+            // Mainkan musik
+            const music = document.getElementById('bgMusic');
+            music.play();
+
+            // Pindah layar
+            document.getElementById('screen1').classList.remove('active');
+            document.getElementById('screen2').classList.add('active');
+
+            // Mulai hujan hati
+            setInterval(createHeart, 600);
+        }
+
+        // Fungsi saat foto diklik
+        function revealCaption(element) {
+            // Jika belum diklik sebelumnya
+            if (!element.classList.contains('revealed')) {
+                element.classList.add('revealed');
+                photosRevealed++;
+
+                // Munculkan tombol lanjut jika semua 3 foto sudah diklik
+                if (photosRevealed === 3) {
+                    document.getElementById('btnNext').style.display = 'inline-block';
+                    document.getElementById('btnNext').style.animation = 'fadeIn 1s';
+                }
+            }
+        }
+
+        // Fungsi pindah ke layar pesan terakhir
+        function showFinalMessage() {
+            document.getElementById('screen2').classList.remove('active');
+            document.getElementById('screen3').classList.add('active');
+            
+            // Hujan hati jadi lebih lebat
+            for(let i=0; i<40; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        // Animasi hati berjatuhan
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+            heart.style.fontSize = Math.random() * 15 + 10 + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+    </script>
+</body>
+</html>
